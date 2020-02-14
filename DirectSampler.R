@@ -1,0 +1,1 @@
+DirectSampler <- function(N,n) #used to directly sample N times from Ising of dim n (use when N small, otherwise use Gibbs)
