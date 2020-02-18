@@ -1,4 +1,4 @@
-function <- LambdaStar(i,j,x,Y,M,J=CanonicalJ(i,j,Y)) #Creates quadratic equation from delta_{ij}(lambda)=-J_{ij}
+LambdaStar <- function(i,j,x,Y,M,J=CanonicalJ(i,j,Y)) #Creates quadratic equation from delta_{ij}(lambda)=-J_{ij}
 {
 n <- round(length(x)) #gives n
 C <- IsingDesign(n)
@@ -19,7 +19,12 @@ R <- (p[1,1]*p[2,2])/(p[1,2]*p[2,1])*exp(-4*J)
 a <- 1-R
 b <- e[1,1]+e[2,2]+R*(e[1,2]+e[2,1])
 c <- e[1,1]*e[2,2]-R*(e[1,2]*e[2,1])
-x <- -(b+sqrt(b^2-4*a*c))/(2*a)
+if (a>0){
+x <- (-b+sqrt(b^2-4*a*c))/(2*a)
 lambda <- 4*x
+}else{
+  x <- (-c)/b
+  lambda <- 4*x
+}
 return(lambda)
 }
