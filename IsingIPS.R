@@ -1,4 +1,5 @@
 IsingIPS <- function(x,M,n,eps) #x sample first moment, M sample second moment, n Graph size, eps accuracy
+{
   #INITIALIZATION Want a distribution, edge set, and estimates for first and second moments
   #We intiialize at independent model with mean given by sample mean
 mu <- x #n by 1 vector
@@ -13,11 +14,12 @@ for (m in N) #loop to set up pmf for each sign pattern
     Y[m] <- Y[m]*(1-((-1)^(C[m,i]>0))*mu[i]) #Mistake in paper as reqiuires binary vals in {0,1} not {-1,1}!
   }
 }
+Z<-Y
 Xi <- diag(n) #Initialize sample second moment
 E <- 0*matrix(rep(1,n^2),nrow=n,ncol=n) #Initialize E hat
 Delta <- 0*matrix(rep(1,n^2),nrow=n,ncol=n)
 J <- 0*matrix(rep(1,n^2),nrow=n,ncol=n)
-while max(abs(mu-x))>=eps | sum(Xi>=M)<2^n | max(abs(Xi-M))>= eps #Until all three of these do not hold.
+while (max(abs(mu-x))>=eps | sum(Xi>=M)<2^n | max(abs(Xi-M))>= eps) #Until all three of these do not hold.
 {
 
 for (i in I) #Initialize E+
@@ -41,7 +43,12 @@ for (i in I) #Initialize E+
       else
       {
         #Solve Delta_{ij}(lambda^*) equation
+        LambdaStar <- LambdaStar(i,j,x,Y,M,J[i,j]) #J[i,j] not required if I've done this right!
         #Update p by (17)
+        for (m in N)
+        {
+          Y[m] <- Y[m]*(0.25*(1+C[m,i]*x[i]+C[m,j]*x[j]+M[i,j]) + 0.25*C[m,i]*C[m,j]*LambdaStar)/(sum(Y[C[,i]==C[m,i] & C[,j]==C[m,j]])) # as before but add 0.25*x_ix_jlambda^*
+        }
         E[i,j] <- 0
       } #end else
     } #end E plus restriction
@@ -49,8 +56,9 @@ for (i in I) #Initialize E+
 } #end cycles through pairs
 
   #UPDATE mu and xi from p (eventually this means we stop repeating the above ['repeat' in paper] by exiting while loop)
-  mu <-
-  Xi <-
+  mu <- FirstMoment(Y)
+  Xi <- SecondMoment(Y)
 }#End while
 
-return(Y,E,mu,Xi)
+return(Z) #return(Y,E,mu,Xi) Can't return multiple arguments, look over this.
+}
