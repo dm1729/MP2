@@ -25,7 +25,7 @@ I <- c(1:(n-1))
 Counter=0 #ADDED COUNTER TO EXIT LOOP FOR DIAGNOSTIC CHECKS
 IfCount=0
 ElseCount=0
-while ( (max(abs(mu-x))>=eps | sum(Xi>=M)<n^2 | max(abs((Xi-M)[E>0])>= eps)) & Counter<1000 ) #Until all three of these do not hold.
+while ( (max(abs(mu-x))>=eps | sum(Xi>=M-10e-16)<n^2 | max(abs((Xi-M)[E>0])>= eps)) & Counter<10000 ) #Until all three of these do not hold.
 {
   Counter=Counter+1
   Diagnostic1 <- max(abs(mu-x)) #Diagnostics - Modifying outputs to see
