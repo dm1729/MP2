@@ -3,7 +3,7 @@ LambdaStar <- function(i,j,x,Y,M,J=CanonicalJ(i,j,Y)) #Creates quadratic equatio
 n <- round(length(x)) #gives n
 C <- IsingDesign(n)
 p <- 0*diag(2)
-e <- q
+e <- p #THIS WAS A q!!!
 I=c(1:2)
 for (k in I)
 {
