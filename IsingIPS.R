@@ -28,9 +28,6 @@ ElseCount=0
 while ( (max(abs(mu-x))>=eps | sum(Xi>=M-10e-16)<n^2 | max(abs((Xi-M)[E>0])>= eps)) & Counter<10000 ) #Until all three of these do not hold.
 {
   Counter=Counter+1
-  Diagnostic1 <- max(abs(mu-x)) #Diagnostics - Modifying outputs to see
-  Diagnostic2 <- sum(Xi>=M)
-  Diagnostic3 <- max(abs((Xi-M)[E>0]))
   for (i in I) #Initialize E+
   {
     II=c((i+1):n) #look over i<j
