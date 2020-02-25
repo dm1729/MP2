@@ -11,7 +11,7 @@ for (k in I)
   {
     a <- 2*k-3
     b <- 2*l-3
-    e[k,l] <- 0.25*(1+a*x[i]+b*x[j]+M[i,j]) #e[1,1] is e_{ij}(-1,1) etc.
+    e[k,l] <- 0.25*(1+a*x[i]+b*x[j]+a*b*M[i,j]) #e[1,1] is e_{ij}(-1,1) etc.
     p[k,l] <- (sum(Y[C[,i]==a & C[,j]==b])) #Sums over elements of the pmf with X_i=a and X_j=b
   }
 }

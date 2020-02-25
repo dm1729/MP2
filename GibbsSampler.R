@@ -4,9 +4,9 @@ GibbsSampler <- function(n,N)
 #Specify number of iterations N, symmetric off-diagonal matrix lambda, mean vector mu
 #n<-100
 #N<-4
-set.seed(1)
+set.seed(NULL)
 mu <- 0.1*rnorm(n) #creates mean matrix
-set.seed(1)
+set.seed(NULL)
 lambda <- 0.1*matrix(rnorm(n^2),nrow=n) #creates interaction matrix. Only upper (or lower) diagonal is relevant.
 lambda[lower.tri(lambda,diag=TRUE)] <- 0 #creates a lower diagonal matrix with zero diagonal
 lambda <- lambda+t(lambda) #creates the related symmetric matrix
