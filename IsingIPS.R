@@ -20,7 +20,7 @@ J <- 0*diag(n)
 I <- c(1:(n-1))
 #M[lower.tri(M)] <- 0 #We only update one half of Xi so we do this. M symmetric so no issue
 Counter=0 #ADDED COUNTER TO EXIT LOOP FOR DIAGNOSTIC CHECKS
-while ( (max(abs(mu-x))>=eps || sum(Xi>=M-10e-15)<n^2 || max(abs((Xi-M)[E>0])>= eps)) && Counter<10000 ) #Until all three of these do not hold.
+while ( (max(abs(mu-x))>=eps || any(Xi<M-10e-15) || max(abs((Xi-M)[E>0])>= eps) ) && Counter<10000 ) #Until all three of these do not hold.
 {
   Counter=Counter+1
   for (i in I) #Initialize E+

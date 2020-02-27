@@ -1,6 +1,6 @@
 FlatteningRank4Mat <- function(P) #Input a PMF for a 4 dimensional binary model (16 masses)
 {
-library("Matrix", lib.loc="C:/Program Files/R/R-3.6.2/library")
+library("Matrix")
 I <- c(1:4)
 # checking {1,2}
 A <- 0*matrix(c(1:16),nrow=4,ncol=4)
