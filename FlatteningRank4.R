@@ -1,5 +1,5 @@
 FlatteningRank4 <- function(P) #Input a PMF for a 4 dimensional binary model (16 masses)
-{
+{ #function aperm. Use command array
 library("Matrix", lib.loc="C:/Program Files/R/R-3.6.2/library")
 I <- c(1:4)
 # checking {1,2}
@@ -29,6 +29,6 @@ for (i in I)
     C[i,j] <- P[ 1+8*(i>(4/2))+((i/2)%%1==0) + 2*(j-1) ] # gives 1 2 9 10 etc
   }
 }
-r <- max(rankMatrix(A,tol=1e-8),rankMatrix(B,tol=1e-4),rankMatrix(C,tol=1e-4)) #finds maximum rank (built in tolerance seems like)
+r <- max(rankMatrix(A,tol=1e-8),rankMatrix(B,tol=1e-8),rankMatrix(C,tol=1e-8)) #finds maximum rank (built in tolerance seems like)
 return(r)
 }

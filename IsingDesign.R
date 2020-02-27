@@ -17,4 +17,4 @@ IsingDesign <- function(n) #creates 2^n by n matrix
   }
   X[X==0] <- -1 #Replaes zeros with 1
   return(X)
-}
+} # E1071, function bin combinations

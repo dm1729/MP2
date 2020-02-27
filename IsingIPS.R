@@ -9,10 +9,7 @@ I=c(1:n)
 Y=2^(-n)*rep(1,2^n)
 for (m in N) #loop to set up pmf for each sign pattern
 {
-  for (i in I)
-  {
-    Y[m] <- Y[m]*(1-((-1)^(C[m,i]>0))*mu[i]) #Mistake in paper as reqiuires binary vals in {0,1} not {-1,1}!
-  }
+    Y[m] <- Y[m]*prod((1-((-1)^(C[m,]>0))*mu)) #Mistake in paper as reqiuires binary vals in {0,1} not {-1,1}!
 }
 Z<-Y #REMOVE FROM CODE AND REPLACE RETURN WITH Y
 #removed
@@ -23,9 +20,7 @@ J <- 0*diag(n)
 I <- c(1:(n-1))
 #M[lower.tri(M)] <- 0 #We only update one half of Xi so we do this. M symmetric so no issue
 Counter=0 #ADDED COUNTER TO EXIT LOOP FOR DIAGNOSTIC CHECKS
-IfCount=0
-ElseCount=0
-while ( (max(abs(mu-x))>=eps | sum(Xi>=M-10e-16)<n^2 | max(abs((Xi-M)[E>0])>= eps)) & Counter<10000 ) #Until all three of these do not hold.
+while ( (max(abs(mu-x))>=eps || sum(Xi>=M-10e-15)<n^2 || max(abs((Xi-M)[E>0])>= eps)) && Counter<10000 ) #Until all three of these do not hold.
 {
   Counter=Counter+1
   for (i in I) #Initialize E+
@@ -39,7 +34,6 @@ while ( (max(abs(mu-x))>=eps | sum(Xi>=M-10e-16)<n^2 | max(abs((Xi-M)[E>0])>= ep
         J[i,j] <- CanonicalJ(i,j,Y) #See CanonicalJ.R
         if (Delta[i,j]+J[i,j] > 0){
           #Update p by (14)
-          IfCount=IfCount+1
           for (m in N) #NOT CREATING A VALID PMF (sorted, wsn't signing the M_ij term)
             #SINCE EACH UPDATE USES WHOLE PMG IN DEMOINATOR, EARLIER UPDATES MESS UP LATER
             #INSTEAD NEED TO STORE NEW ONE SEPERATELY THEN UPDATE AT END (replaced with Z then assign Y<-Z)
@@ -49,7 +43,6 @@ while ( (max(abs(mu-x))>=eps | sum(Xi>=M-10e-16)<n^2 | max(abs((Xi-M)[E>0])>= ep
           Y <- Z
           E[i,j] <- 1 #Puts an edge between i and j in the adjacency matrix
         } else {
-          ElseCount=ElseCount+1
           #Solve Delta_{ij}(lambda^*) equation
           LambdaStar <- LambdaStar(i,j,x,Y,M,J[i,j]) #J[i,j] not required if I've done this right!
           #Update p by (17)
