@@ -1,8 +1,8 @@
 DirectSampler <- function(N,n)
   {#used to directly sample N times from Ising of dim n (use when N small, otherwise use Gibbs)
-  set.seed(1)
+  set.seed(2)
 mu <- 0.1*rnorm(n) #creates mean matrix
-set.seed(1)
+set.seed(2)
 lambda <- 0.1*matrix(rnorm(n^2),nrow=n) #creates interaction matrix. Only upper (or lower) diagonal is relevant.
 lambda[lower.tri(lambda,diag=TRUE)] <- 0 #creates a lower diagonal matrix with zero diagonal
 lambda <- lambda+t(lambda) #creates the related symmetric matrix
