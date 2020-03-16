@@ -36,8 +36,7 @@ for (i in I){ #Produces M Gibbs Samples, each of size N and using a different ba
       S[i,(1+(m-1)*n-(m*(m-1)/2)):((m*n-(m*(m+1)/2)))] <- B[m,(m+1):n] #Adds interactions as X1X2,X1X3,..,X2X3,..,X(n-1)Xn
     }
     Y[i,] <- IsingIPS(A,B,n,10e-3)
-    R[i] <- FlatteningRank4(Y[i,])
-    SV[i,] <- FlatteningRank4Mat(Y[i,]) #singular vals (in list of 12, 4 for each of the 3 flattenings)
+    R[i] <- FlatteningRank(Y[i,])
 }
-return(list(Q,S,Y,R,SV)) # List containing first moment, second moment, fitted pmf, flat rank, and flattening sing vals
+return(list(Q,S,Y,R)) # List containing first moment, second moment, fitted pmf, flat rank, and flattening sing vals
 }

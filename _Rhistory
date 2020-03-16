@@ -1,0 +1,512 @@
+x(i)
+x(j)
+e(k,l)
+EqualityConstraints(4,30,5)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+EqualityConstraints(4,30,5)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+EqualityConstraints(4,30,5)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+EqualityConstraints(4,30,5)
+debug(EqualityConstraints)
+EqualityConstraints(4,30,5)
+X
+A
+B
+Z
+S
+S
+B
+Z
+H
+EqualityConstraints(4,30,5)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+EqualityConstraints(4,30,5)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+EqualityConstraints(4,30,5)
+EqualityConstraints(4,30,50)
+EqualityConstraints(4,10,50)
+EqualityConstraints(4,10,50)
+EqualityConstraints(4,100,100)
+EqualityConstraints(4,100,100)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/LambdaStar.R')
+EqualityConstraints(4,100,100)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+EqualityConstraints(4,100,100)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+EqualityConstraints(4,100,100)
+L <- EqualityConstraints(4,100,100)
+View(L)
+View(L)
+L(3)
+L[3]
+View(L)
+View(L)
+svd
+FlatteningRank4Mat <- function(P) #Input a PMF for a 4 dimensional binary model (16 masses)
+{
+library("Matrix", lib.loc="C:/Program Files/R/R-3.6.2/library")
+I <- c(1:4)
+# checking {1,2}
+A <- 0*matrix(c(1:16),nrow=4,ncol=4)
+for (i in I)
+{
+for (j in I)
+{
+A[i,j] <- P[ 4*i-3 + j-1 ]
+}
+}
+# checking {1,3}
+B <- 0*matrix(c(1:16),nrow=4,ncol=4)
+for (i in I)
+{
+for (j in I)
+{
+B[i,j] <- P[ 1+8*(i>(4/2))+2*((i/2)%%1==0) + (j-1)+2*(j>=3) ] #adds 8 when halfway through, adds 2 on even entries
+}
+}
+# checking {1,4}
+C <- 0*matrix(c(1:16),nrow=4,ncol=4)
+for (i in I)
+{
+for (j in I)
+{
+C[i,j] <- P[ 1+8*(i>(4/2))+((i/2)%%1==0) + 2*(j-1) ] # gives 1 2 9 10 etc
+}
+}
+r <- max(rankMatrix(A,tol=1e-8),rankMatrix(B,tol=1e-4),rankMatrix(C,tol=1e-4)) #finds maximum rank (built in tolerance seems like)
+return(list(A,B,C))
+}
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank4Mat.R')
+L[[3]]
+P <- L[[3]] #Part of list corresponding to the PMFs
+P[1,]
+FlatteningRank4Mat(P[1,])
+FlatteningRank4(P[1,])
+FlatteningRank4Mat(P[1,])
+Mats <- FlatteningRank4Mat(P[1,])
+Mats
+A <- Mats[[1]]
+B<- Mats[[2]]
+C<- Mats[[3]]
+svd(A)
+svd(B)
+svd(C)
+A
+B
+C
+P[1,]
+FlatteningRank4Mat(c(1:16))
+L[[1]][1,]
+L[[2]][1,]
+L[[3]][1,]
+sum(L[[3]][1,])
+L[[3]][2,]
+L[[3]][3,]
+L[[3]][4,]
+L[[3]]
+L <- EqualityConstraints(4,100,100)
+L[[3]]
+i=1
+set.seed(i)
+mu <- 0.01*rnorm(n) #creates mean matrix
+set.seed(i)
+lambda <- 0.1*matrix(rnorm(n^2),nrow=n) #creates interaction matrix. Only upper (or lower) diagonal is relevant.
+lambda[lower.tri(lambda,diag=TRUE)] <- 0 #creates a lower diagonal matrix with zero diagonal
+lambda <- lambda+t(lambda) #creates the related symmetric matrix
+n=4
+set.seed(i)
+mu <- 0.01*rnorm(n) #creates mean matrix
+set.seed(i)
+lambda <- 0.1*matrix(rnorm(n^2),nrow=n) #creates interaction matrix. Only upper (or lower) diagonal is relevant.
+lambda[lower.tri(lambda,diag=TRUE)] <- 0 #creates a lower diagonal matrix with zero diagonal
+lambda <- lambda+t(lambda) #creates the related symmetric matrix
+lambda
+mu
+x <- rep(1,n)
+X <- 0*matrix(c(1:n*N),nrow=N,ncol=n) #nxN matrix of zeroes to include samples
+set.seed(NULL) #Seemed to be keeping the set seed for the binomial generator as well without doing this.
+for (k in v)
+{
+for (j in w)
+{
+x[j]<-sign(rbinom(1,1,(exp(mu[j]+2*x[-j]%*%lambda[j,-j])/(exp(-mu[j]-2*x[-j]%*%lambda[j,-j])+exp(mu[j]+2*x[-j]%*%lambda[j,-j]))))-0.5)
+}
+X[k,]=x
+}
+v <- c(1:N)
+w <- c(1:n)
+x <- rep(1,n)
+X <- 0*matrix(c(1:n*N),nrow=N,ncol=n) #nxN matrix of zeroes to include samples
+set.seed(NULL) #Seemed to be keeping the set seed for the binomial generator as well without doing this.
+for (k in v)
+{
+for (j in w)
+{
+x[j]<-sign(rbinom(1,1,(exp(mu[j]+2*x[-j]%*%lambda[j,-j])/(exp(-mu[j]-2*x[-j]%*%lambda[j,-j])+exp(mu[j]+2*x[-j]%*%lambda[j,-j]))))-0.5)
+}
+X[k,]=x
+}
+v <- c(1:100)
+w <- c(1:n)
+N<-100
+x <- rep(1,n)
+X <- 0*matrix(c(1:n*N),nrow=N,ncol=n) #nxN matrix of zeroes to include samples
+set.seed(NULL) #Seemed to be keeping the set seed for the binomial generator as well without doing this.
+for (k in v)
+{
+for (j in w)
+{
+x[j]<-sign(rbinom(1,1,(exp(mu[j]+2*x[-j]%*%lambda[j,-j])/(exp(-mu[j]-2*x[-j]%*%lambda[j,-j])+exp(mu[j]+2*x[-j]%*%lambda[j,-j]))))-0.5)
+}
+X[k,]=x
+}
+x
+X
+A <- 0*c(1:n)
+for (l in c(1:n)){
+A[l] <- mean(X[,l]) #Sample mean of the Gibbs sample
+}
+A
+View(L)
+View(L)
+B <- SampleSecondMoment(X)
+B
+IsingIPS(A,B,n,1e-3)
+L <- EqualityConstraints(4,100,100)
+L[[3]]
+L[[4]]
+rm(B)
+rm(C)
+rm(A)
+rm(i)
+rm(j,k,l,mu,N,n,v,w,x)
+RM(P,X,Mats,lambda)
+rm(P,X,Mats,lambda)
+L
+svd(A)
+A<-diag(2)
+svd(A)
+x<-svd(A)
+x
+x<-svd(A)$d
+x
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank4Mat.R')
+FlatteningRank4Mat(c(1:16))
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank4Mat.R')
+L <- EqualityConstraints(4,100,100)
+L[[5]]
+rm(A)
+rm(x)
+View(L)
+View(L)
+View(L)
+View(L)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank4Mat.R')
+array(c(1:16),rep(2,4))
+D <- array(c(1:16),rep(2,4))
+dim(D)
+dim(D) = c(4,4)
+D
+D
+D <- array(c(1:16),rep(2,4))
+aperm(D)
+dim(D) = 4
+dim(D) = c(4,4)
+D
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank4.R')
+View(L)
+View(L)
+EqualityConstraints(4,100,100)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+L <- EqualityConstraints(4,100,100)
+L[[4]]
+L[[5]]
+L[[5]]
+hist(L[[5]][1])
+l[[5]][1]
+l[[5]][1]
+L[[5]][1]
+L[[5]][1,]
+hist(L[[5]][,1])
+hist(L[[5]][,5])
+hist(L[[5]][,9])
+hist(L[[5]][,2])
+hist(L[[5]][,6])
+hist(L[[5]][,10])
+mean(L[[4]])
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+L2 <- EqualityConstraints(4,100,100)
+mean(L2[[4]])
+L[[4]]
+table(L[[4]])
+table(L2[[4]])
+L2[[4]]
+x=[1,0,1,1,1]
+y <- c(0,1,1,0,0)
+prod(y)
+prod(y>0)
+prod(y[y>0])
+y*y
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+L <- EqualityConstraints(4,100,100)
+L
+L[[4]]
+mean(L[[4]])
+matrix(0,2,2)
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL,type=''source'')
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL,type='source')
+rtools
+?rtools
+library("tools", lib.loc="C:/Program Files/R/R-3.6.2/library")
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL,type='source')
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL,type="source")
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("rtools")
+install.packages("devtools")
+find_rtools()
+library(devtools)
+find_rtools()
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("MLLPs_0.1.004.tar.gz", repos=NULL,type="source")
+install.packages("/d/Documents/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL,type="source")
+install.packages("/D/Documents/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL,type="source")
+install.packages("D:\Documents\Part IV\Mini Projects\Mini Project 2\R\MLLPs_0.1.004.tar.gz", repos=NULL,type="source")
+install.packages("\D\Documents\Part IV\Mini Projects\Mini Project 2\R\MLLPs_0.1.004.tar.gz", repos=NULL,type="source")
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/EqualityConstraints.R')
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL,type="source")
+library("MLLPs")
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+devtools::install_github("rje42/rje")
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("contingency")
+devtools::install_github("rje42/contingency")
+devtools::install_github("rje42/MixedGraphs")
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+Rtools
+RTools
+Rtools
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+devtools::find_rtools()
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+library(pkgbuild)
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+library("Rccp")
+library("rccp")
+library("Rcpp")
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+devtools::find_rtools()
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("osqp")
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+install.packages("~/Part IV/Mini Projects/Mini Project 2/R/MLLPs_0.1.004.tar.gz", repos=NULL)
+A <- c(1:16)
+dim(A)=2^n
+dim(A)=rep(2,4)
+A
+A[2,2,2,2]
+A[1,2,2,2]
+B <- aperm(A,c(2,1,3,4))
+B
+B[2,1,2,2]
+B[1,1,1,1]
+B[2,1,1,1]
+A
+dim(A)=c(4,4)
+A
+A
+M <- c(1:16)
+dim(M)=rep(2,4)
+A<-M
+dim(A)=c(4,4)
+A
+A
+M
+A
+M
+M[1,2,2,2]
+A
+M <- aperm(M,c(4:1))
+B<-M
+dim(B)=c(4,4)
+B
+A
+B <- aperm(c(3,2,1,4))
+B <- aperm(M,c(3,2,1,4))
+B
+dim(B)=c(2,2)
+library("Matrix", lib.loc="C:/Program Files/R/R-3.6.2/library")
+choose(4,2)
+choose(11,2)
+choose(5,2)
+choose(7,2)
+library(combinat)
+library("combinat"")
+library("combinat")
+library("combinat")
+install.packages("combinat")
+library(combinat)
+?combinat
+??combinat
+perm(c(1,3))
+combinat
+library(combinat)
+permn(c(2,4))
+permn(c(2,5))
+permn(c(2,3,4))
+permn(c(1,4))
+permn(c(1:4))
+permn(c(1:4))[[1]]
+c(1,permn(c(1:4))[[1]])
+permn(c(1:3))
+perm(c(2:4))
+permn(c(2:4))
+permn(c(2:5))
+combn(c(1:4))
+combn(c(1:4),2)
+combn(c(1:4),1)
+combn(c(1:4),3)
+combn(c(1:5),2)
+combn(c(1:5),3)
+A<-aperm(M,c(1,2))
+x<-c(1,2,5)
+x
+c(1:5)-x
+p<-c(1:3)
+p[p==4]
+p[p==3]
+p[p==4]>0
+true(p==4)
+p==4
+p==3
+any(p)==3
+p
+any(p==3)
+any(p==4)==FALSE
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/SubsetToPerm.R')
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/SubsetToPerm.R')
+SubsetToPerm(1,5)
+SubsetToPerm(c(1,2,5),5)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank.R')
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank.R')
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank.R')
+FlatteningRank(c(1:16))
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank.R')
+FlatteningRank(c(1:16))
+FlatteningRank4(c(1:16))
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank.R')
+FlatteningRank(c(1:16))
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank.R')
+FlatteningRank(c(1:16))
+c(1:16)
+X<-c(1:16)
+dim(X)=c(4,4)
+X
+rankMatrix(X)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank.R')
+FlatteningRank(c(1:16))
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank.R')
+FlatteningRank(c(1:16))
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/FlatteningRank.R')
+FlatteningRank(c(1:16))
+FlatteningRank4(c(1:16))
+FlatteningRank(c(1:32))
+FlatteningRank(c(1:64))
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/SignedIsingIPS.R')
+X
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/DirectSampler.R')
+X<-DirectSampler(50,4)
+source("IsingDesignQ.R")
+X<-DirectSampler(50,4)
+X
+SignedIsingIPS(X,0.01)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/SignedIsingIPS.R')
+SignedIsingIPS(X,0.01)
+source("IsingCounts")
+source("IsingCounts.R")
+SignedIsingIPS(X,0.01)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/SignedIsingIPS.R')
+SignedIsingIPS(X,0.01)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/SignedIsingIPS.R')
+SignedIsingIPS(X,0.01)
+SignedIsingIPS(X,0.01)
+P<-SignedIsingIPS(X,0.01)[[2]]
+FlatteningRank4(P)
+sum(P)
+P<-SignedIsingIPS(X,0.001)[[2]]
+P
+Z
+Z<-rep(0,16)
+Z[1:4]=Y[1:4]
+Z[1:4]=P[1:4]
+Z[1:4]=P[5:8]
+Z[5:8]=P[1:4]
+Z[9:12]=P[13:16]
+Z[13:16]=P[9:12]
+Z
+FlatteningRank4(Z)
+X<-DirectSampler(50,4)
+SignedIsingIPS(X)
+SignedIsingIPS(X,0.001)
+SignedIsingIPS(X,0.001)[[2]]
+FlatteningRank4(SignedIsingIPS(X,0.001)[[2]])
+X<-DirectSampler(50,4)
+FlatteningRank4(SignedIsingIPS(X,0.001)[[2]])
+X<-DirectSampler(50,4)
+FlatteningRank4(SignedIsingIPS(X,0.001)[[2]])
+X<-DirectSampler(50,4)
+FlatteningRank4(SignedIsingIPS(X,0.001)[[2]])
+X
+IsingIps(colmean(x),SampleSecondMoment(X),4,0.001)
+IsingIPS(colMeans(x),SampleSecondMoment(X),4,0.001)
+IsingIPS(colMeans(X),SampleSecondMoment(X),4,0.001)
+FlatteningRank4(IsingIPS(colMeans(X),SampleSecondMoment(X),4,0.001))
+FlatteningRank4(IsingIPS(colMeans(X),SampleSecondMoment(X),4,0.001))
+X<-GibbsSampler(50,4)
+X<-DirectSampler(100,4)
+FlatteningRank4(IsingIPS(colMeans(X),SampleSecondMoment(X),4,0.001))
+X<-DirectSampler(100,4)
+FlatteningRank4(IsingIPS(colMeans(X),SampleSecondMoment(X),4,0.001))
+X<-DirectSampler(100,4)
+FlatteningRank4(IsingIPS(colMeans(X),SampleSecondMoment(X),4,0.001))
+X<-DirectSampler(100,4)
+FlatteningRank4(IsingIPS(colMeans(X),SampleSecondMoment(X),4,0.001))
+X<-DirectSampler(100,4)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/DirectSampler.R')
+X<-DirectSampler(100,4)
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/DirectSampler.R')
+FlatteningRank4(IsingIPS(colMeans(X),SampleSecondMoment(X),4,0.001))
+SignedIsingIPS(X,0.001)
+FlatteningRank4(SignedIsingIPS(X,0.001)[[2]])
+X<-DirectSampler(100,4)
+SignedIsingIPS(X,0.001)
+FlatteningRank4(SignedIsingIPS(X,0.001)[[2]])
+sum(SignedIsingIPS(X,0.001)[[2]])
+X
+IsingCounts(X)
+p<- c(0.109,0.053,0.0928,0.0452,0.0908,0.0442,0.0774,0.0376,0.0571,0.0347,0.0487,0.0295,0.0941,0.0571,0.0801,0.0487)
+FlatteningRank4(p)
+X
+SignedIsingIPS(X)
+p2<-SignedIsingIPS(X,0.01)[[2]]
+p2
+FlatteningRank4(p2)
+SignedIsingIPS(X)
+SignedIsingIPS(X,0.01)
+p
+p2
+source('~/Part IV/Mini Projects/Mini Project 2/R/Ising Model/SignedEqualityConstraints.R')
+SignedEqualityConstraints(4,50,20)
